@@ -82,43 +82,30 @@ def part1():
     return count
 
 
-def get_x_mas_count(puzzle_input):
-    """
-    Look for the below:
-    M.S
-    .A.
-    M.S
+def get_x_mas_count(grid):
+    rows = len(grid)
+    cols = len(grid[0])
+    count = 0
+    for row in range(1, rows-1):
+        for col in range(1, cols-1):
+            if grid[row][col] != 'a':
+                continue
 
-    or
+            tl = grid[row-1][col-1]
+            tr = grid[row-1][col+1]
+            bl = grid[row+1][col-1]
+            br = grid[row+1][col+1]
 
-    S.S
-    .A.
-    M.M
+            left_diagonal = "".join([tl, grid[row][col], br])
+            right_diagonal = "".join([tr, grid[row][col], bl])
 
-    or
-
-    S.M
-    .A.
-    S.M
-    """
-
-    for i in range(len(puzzle_input)):
-        for j in range(len(puzzle_input[0])):
-            # right
-            if puzzle_input[i][j] == "M":
-                # check for diagonal MAS right
-                pass
-
-                # check for left if A below
-            if puzzle_input[i][j] == "S":
-                # check for diagonal SAM right
-                pass
-
-    return puzzle_input
+            if left_diagonal in ["mas", "sam"] and right_diagonal in ["mas", "sam"]:
+                count += 1
+    return count
 
 
 def part2():
-    with open("example.txt", "r") as f:
+    with open("input.txt", "r") as f:
         d = f.read()
 
     puzzle_input = d.lower().splitlines()
